@@ -13,7 +13,7 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         demo
- * @version         $Id: index.php 1 2013-09-12 03:45:27Z cfc4n $
+ * @version         $Id: index.php 2 2013-09-12 08:49:49Z cfc4n $
  */
 
 require dirname(__FILE__) . '/Pecker/Autoloader.php';
@@ -33,24 +33,51 @@ try {
     $scaner->run();
     $result = $scaner->getReport();
 
-    //result of demo for show
-    foreach ($result as $k => $v)
+    $html = '';
+    if (count($result) == 0)
     {
-        if ($v['parser'] === false)
+        $html = '<tr><td colspan="4">It is very safe.</td></tr>';
+    }
+    else
+    {
+        //result of demo for show
+        foreach ($result as $k => $v)
         {
-            echo $k,' ',$v['message'];
-        }
-        else 
-        {
-            if (count($v['function']) > 0)
+            if ($v['parser'] === false)
             {
-                foreach ($v['function'] as $func => $line)
+                $html .= '<tr><td title="'.$k.'">'.str_replace($config['scandir'], '', $k).'</td> <td></td> <td></td> <td class="focus">'.$v['message'].'</td></tr>';
+            }
+            else 
+            {
+                $n = count($v['function']);
+                if ( $n > 0)
                 {
-                    echo $k,' found function "',$func, '" in line ',implode(', ', $line),".\n";
+                    $rowspan = false;
+                    foreach ($v['function'] as $func => $line)
+                    {
+                        if (!$rowspan)
+                        {
+                            $html .='<tr><td rowspan="'.$n.'" title="'.$k.'">'.str_replace($config['scandir'], '', $k).'</td>';
+                            $rowspan = true;
+                        }
+                        else 
+                        {
+                            $html .='<tr>';
+                        }
+                        $html .='<td>'.$func.'</td> <td>'.implode(', <br />', $line).'</td> <td></td></tr>';
+                    }
                 }
             }
         }
     }
+    $report = file_get_contents('template.html');
+    $report = str_replace('{PATH}', '<span class="string">'.$config['scandir'].'</span>', $report);
+    $report = str_replace('{EXTEND}', '<span class="string">'.implode('</span>,<span class="string">',$config['extend']).'</span>', $report);
+    $report = str_replace('{FUNCTION}','<span class="string">'.implode('</span>,<span class="string"> ',$config['function']).'</span>', $report);
+    $report = str_replace('{RESULT}', $html, $report);
+    $filename = 'report_'.date('YmdHis').'.html';
+    file_put_contents($filename, $report);
+    echo '<a href="'.$filename.'">Completed,View report.</a>';
 }
 catch (Exception $e)
 {

@@ -1,0 +1,38 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title>Report by Pecker Scanner</title>
+<style>
+*{margin:0;padding:0;}
+
+table{width:80%;float:left;clear:both;margin:3rem auto;border-collapse:collapse;box-shadow:0.3rem 0.3rem 0.5rem rgba(0,0,0,0.3);border:1px solid #f8f8f8;color:#333;}
+table caption,table th{padding:1rem;vertical-align:middle;font-family:微软雅黑,Tahoma,Arial,Helvetica,sans-serif;color:#999;border:1px solid #ccc;background-color:#F8F8F8;}
+table caption{padding-top:0;border:none;background-color:transparent;text-align:left;color:#555;font-weight:bold;text-shadow:1px 1px 1px #fff;padding-left:50px;}
+table caption .string{background:#B1FF9E;border-bottom:1px solid #66CC00;margin:0 5px;font-size:13px;font-family:Arial;}
+table td{padding:1rem;vertical-align:middle;color:#555;border:1px solid #d7d7d7;background-color:rgba(255,255,255,0.3);font-weight:normal;line-height:1.5rem;font-size:1.2rem}
+table tr .focus{text-shadow:1px 1px 1px #fff;text-align:center;color:#F48C12;font:lighter 1.5rem/1.5rem Monaco,'MonacoRegular',monospace;}
+table code{color:#66CC00;background-color:transparent}
+table p{clear:both}
+h1,h2,h3,h4,dt{hyphens:none;-webkit-hyphens:none;-moz-hyphens:none}
+</style>
+</head>
+
+<body>
+<table dir="ltr" border="1" summary="Scan result">
+	<caption>Scan path: {PATH} <br/> extensions:{EXTEND}<br/>keywords{FUNCTION}</caption>
+	<colgroup width="40%" />
+	<colgroup id="colgroup" class="colgroup" align="center" valign="middle" title="title" span="2"/>
+	<thead>
+		<tr>
+			<th scope="col" title="suspect files name and path">File Name</th>
+			<th scope="col" title="functions and language constructs">Function</th>
+			<th scope="col" title="the line of suspect codes">line</th>
+			<th scope="col" title="Remark">Remark</th>
+		</tr>
+	</thead>
+	<tbody>
+		{RESULT}
+	</tbody>
+</table>
+</body>
+</html>
