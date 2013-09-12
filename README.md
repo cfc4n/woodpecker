@@ -47,15 +47,13 @@ Result:
 
 Info
 =====
-Home Page:[http://www.cnxct.com/pecker-scanner/][1].
-
-WeiBo:[http://weibo.com/n/CFC4N][2].
++ Home Page:[http://www.cnxct.com/pecker-scanner/][1].
++ WeiBo:[http://weibo.com/n/CFC4N][2].
 
 Reference
 =====
-[PHPPHP][3].
-
-[PHP-Parser][4].
++ [PHPPHP][3].
++ [PHP-Parser][4].
 
 [1]:http://www.cnxct.com/pecker-scanner/
 [2]:http://weibo.com/n/CFC4N
