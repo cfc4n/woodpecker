@@ -15,7 +15,7 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         Lexer
- * @version         $Id: Lexer.php 1 2013-09-12 03:45:27Z cfc4n $
+ * @version         $Id: Lexer.php 4 2013-09-12 10:49:36Z cfc4n $
  */
 
 class Pecker_Lexer
@@ -44,6 +44,10 @@ class Pecker_Lexer
      */
     public function startLexing($code)
     {
+        if (preg_match('/<\?(php)?\s*@Zend;[\r\n|\n]+\d+;/', $code)) {
+            $this->errMsg = 'Encrypt with Zend optimizer.';
+            return false;
+        }
         $this->tokens = token_get_all($code);
         $this->code = $code;
         $this->pos  = -1;
