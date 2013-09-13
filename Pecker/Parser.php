@@ -15,7 +15,7 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         Parser
- * @version         $Id: Parser.php 8 2013-09-13 06:36:32Z cfc4n $
+ * @version         $Id: Parser.php 9 2013-09-13 07:54:47Z cfc4n $
  */
 
 class Pecker_Parser
@@ -1221,9 +1221,14 @@ class Pecker_Parser
                     }
                 } else
                 {
-                    if ($this->tokens[$k + $i] == ';')
+                    if ($this->tokens[$k + $i] == ';' || ($this->tokens[$k + $i] == ')' && $this->getNextToken($k + $i) == ';'))
                     {
                         break;
+                    }
+                    elseif ($this->tokens[$k + $i] == '.')
+                    {
+                        $str = '';
+                        continue;
                     }
                     $str .= $this->tokens[$k + $i];
                 }
@@ -1234,7 +1239,44 @@ class Pecker_Parser
         }
         return $str;
     }
-    
+
+    /**
+     * get all token from $k to END TOKEN. (T_CLOSE_TAG or ;)
+     * @param int $k
+     * @return string
+     */
+    public function getPieceTokenAll ($k)
+    {
+        $str = '';
+        for ($i = 1;; $i ++)
+        {
+            if (isset($this->tokens[$k + $i]))
+            {
+                if (is_array($this->tokens[$k + $i]))
+                {
+                     if ($this->tokens[$k + $i][0] == T_CLOSE_TAG)
+                    {
+                        break;
+                    }
+                    $str .= $this->tokens[$k + $i][1];
+                }
+                else
+                {
+                    if ($this->tokens[$k + $i] == ';')
+                    {
+                        break;
+                    }
+                    $str .= $this->tokens[$k + $i];
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
+        return $str;
+    }
+        
     /**
      * get all tokens
      * @return array

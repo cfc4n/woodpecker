@@ -13,14 +13,14 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         demo
- * @version         $Id: index.php 5 2013-09-13 02:22:58Z cfc4n $
+ * @version         $Id: index.php 9 2013-09-13 07:54:47Z cfc4n $
  */
 
 require dirname(__FILE__) . '/Pecker/Autoloader.php';
 Pecker_Autoloader::register();    //register autoloader
 
 $config = array(
-    'scandir' => dirname(__FILE__),
+    'scandir' => dirname(__FILE__).DIRECTORY_SEPARATOR.'test',
     'extend' => array('php','inc','php5'),
     'function' => array('exec','system','create_function','passthru','shell_exec','proc_open','popen','curl_exec','parse_ini_file','show_source'),
 );
@@ -33,42 +33,45 @@ try {
     $scaner->run();
     $result = $scaner->getReport();
 
+
     $html = '';
-    if (count($result) == 0)
+    //result of demo for show
+    foreach ($result as $k => $v)
     {
-        $html = '<tr><td colspan="4">It is very safe.</td></tr>';
-    }
-    else
-    {
-        //result of demo for show
-        foreach ($result as $k => $v)
+        if ($v['parser'] === false)
         {
-            if ($v['parser'] === false)
+            $html .= '<tr><td title="'.$k.'">'.str_replace($config['scandir'], '', $k).'</td> <td align="center"> - </td> <td align="center"> - </td> <td class="focus">'.$v['message'].'</td></tr>';
+        }
+        else 
+        {
+            $n = count($v['function']);
+            if ( $n > 0)
             {
-                $html .= '<tr><td title="'.$k.'">'.str_replace($config['scandir'], '', $k).'</td> <td></td> <td></td> <td class="focus">'.$v['message'].'</td></tr>';
-            }
-            else 
-            {
-                $n = count($v['function']);
-                if ( $n > 0)
+                $rowspan = false;
+                foreach ($v['function'] as $func => $line)
                 {
-                    $rowspan = false;
-                    foreach ($v['function'] as $func => $line)
+                    if (!$rowspan)
                     {
-                        if (!$rowspan)
-                        {
-                            $html .='<tr><td rowspan="'.$n.'" title="'.$k.'">'.str_replace($config['scandir'], '', $k).'</td>';
-                            $rowspan = true;
-                        }
-                        else 
-                        {
-                            $html .='<tr>';
-                        }
-                        $html .='<td>'.$func.'</td> <td>'.implode(', <br />', $line).'</td> <td></td></tr>';
+                        $html .='<tr><td rowspan="'.$n.'" title="'.$k.'">'.str_replace($config['scandir'], '', $k).'</td>';
+                        $rowspan = true;
                     }
+                    else 
+                    {
+                        $html .='<tr>';
+                    }
+                    $html1 = '';
+                    foreach ($line as $c)
+                    {
+                        $html1 .= 'line '.$c['line'].' :'.'<span class="code" title="'.$func.' '.htmlspecialchars($c['code']).'">'.$func.' '.htmlspecialchars(substr($c['code'],0,50)).'</span><br/>';
+                    }
+                    $html .='<td>'.$func.'</td> <td>'.$html1.'</td> <td align="center"> - </td></tr>';
                 }
             }
         }
+    }
+    if ($html == '')
+    {
+        $html = '<tr><td colspan="4" align="center">Congratulations,It is very safe...</td></tr>';
     }
     $report = file_get_contents('template.html');
     $report = str_replace('{PATH}', '<span class="string">'.$config['scandir'].'</span>', $report);

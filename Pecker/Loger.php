@@ -13,7 +13,7 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         Scanner
- * @version         $Id: Loger.php 1 2013-09-12 03:45:27Z cfc4n $
+ * @version         $Id: Loger.php 9 2013-09-13 07:54:47Z cfc4n $
  */
 
 class Pecker_Loger
@@ -35,11 +35,11 @@ class Pecker_Loger
         $this->result[$this->file]['message'] = $msg;
     }
     
-    public function catchLog($func, $line)
+    public function catchLog($func, $line, $code = '')
     {
         $this->result[$this->file]['parser'] = true;
         $this->result[$this->file]['function'][$func] = isset($this->result[$this->file]['function'][$func]) ? $this->result[$this->file]['function'][$func] : array();
-        $this->result[$this->file]['function'][$func][] = $line;
+        $this->result[$this->file]['function'][$func][] = array('line'=>$line,'code'=>$code);
     }
     
     public function getReport()

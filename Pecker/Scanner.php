@@ -13,7 +13,7 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         Scanner
- * @version         $Id: Scanner.php 8 2013-09-13 06:36:32Z cfc4n $
+ * @version         $Id: Scanner.php 9 2013-09-13 07:54:47Z cfc4n $
  */
 class Pecker_Scanner
 {
@@ -159,21 +159,15 @@ class Pecker_Scanner
                 switch ($token[0])
                 {
                     case T_EVAL:
-                        $this->report->catchLog($token[1],$token[2]);
+                        $this->report->catchLog($token[1],$token[2],$this->parser->getPieceTokenAll($k));
                         break;
                     case T_FUNCTION:
                         if (isset($this->function[$token[1]]))
                         {
-                            $this->report->catchLog($token[1],$token[2]);
+                            $this->report->catchLog($token[1],$token[2],$this->parser->getPieceTokenAll($k));
                         }
                         break;
                     case T_VARIABLE:
-/*                         $ntoken = $this->parser->getNextToken($k);
-                        if ($ntoken === '(')
-                        {
-                            $this->report->catchLog($token[1], $token[2]);
-                        }
-                        break; */
                     case T_STRING:
                         if (isset($this->function[$token[1]]))
                         {
@@ -181,7 +175,7 @@ class Pecker_Scanner
                             $ptoken = $this->parser->getPreToken($k);
                             if ($ntoken === '(' && $ptoken != '->' && $ptoken != '::' && $ptoken != 'function')
                             {
-                                $this->report->catchLog($token[1], $token[2]);
+                                $this->report->catchLog($token[1], $token[2],$this->parser->getPieceTokenAll($k));
                             }
                         }
                         break;
@@ -189,11 +183,14 @@ class Pecker_Scanner
                     case T_INCLUDE_ONCE:
                     case T_REQUIRE:
                     case T_REQUIRE_ONCE:
-                        $infile = $this->parser->getPieceToken($k);
-                        $fileinfo = pathinfo($infile);
-                        if (!isset($this->extend[$fileinfo['extension']]))
+                        if (isset($this->function[$token[1]]))
                         {
-                            $this->report->catchLog($token[1], $token[2]);
+                            $infile = $this->parser->getPieceToken($k);
+                            $fileinfo = pathinfo($infile);
+                            if (!isset($this->extend[$fileinfo['extension']]))
+                            {
+                                $this->report->catchLog($token[1], $token[2],$this->parser->getPieceTokenAll($k));
+                            }
                         }
                         break;
                     default:
