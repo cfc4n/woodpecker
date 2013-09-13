@@ -13,7 +13,7 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         demo
- * @version         $Id: index.php 2 2013-09-12 08:49:49Z cfc4n $
+ * @version         $Id: index.php 5 2013-09-13 02:22:58Z cfc4n $
  */
 
 require dirname(__FILE__) . '/Pecker/Autoloader.php';
@@ -22,7 +22,7 @@ Pecker_Autoloader::register();    //register autoloader
 $config = array(
     'scandir' => dirname(__FILE__),
     'extend' => array('php','inc','php5'),
-    'function' => array('exec','system','reate_function','passthru','shell_exec','proc_open','popen','curl_exec','parse_ini_file','show_source'),
+    'function' => array('exec','system','create_function','passthru','shell_exec','proc_open','popen','curl_exec','parse_ini_file','show_source'),
 );
 
 try {

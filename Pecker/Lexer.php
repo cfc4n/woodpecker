@@ -15,7 +15,7 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         Lexer
- * @version         $Id: Lexer.php 4 2013-09-12 10:49:36Z cfc4n $
+ * @version         $Id: Lexer.php 7 2013-09-13 03:29:53Z cfc4n $
  */
 
 class Pecker_Lexer
@@ -32,7 +32,7 @@ class Pecker_Lexer
         $this->tokenMap = $this->createTokenMap();
         // map of tokens to drop while lexing (the map is only used for isset lookup,
         // that's why the value is simply set to 1; the value is never actually used.)
-        $this->dropTokens = array_fill_keys(array(T_WHITESPACE, T_OPEN_TAG, T_CLOSE_TAG), 1);
+        $this->dropTokens = array_fill_keys(array(T_WHITESPACE, T_OPEN_TAG), 1);
     }
 
     /**
@@ -48,6 +48,7 @@ class Pecker_Lexer
             $this->errMsg = 'Encrypt with Zend optimizer.';
             return false;
         }
+        $this->resetErrors();
         $this->tokens = token_get_all($code);
         $this->code = $code;
         $this->pos  = -1;
@@ -55,6 +56,10 @@ class Pecker_Lexer
         return $this->checkError();
     }
 
+    protected function resetErrors() {
+        // clear error_get_last() by forcing an undefined variable error
+        @$undefinedVariable;
+    }
 
     protected function checkError()
     {
@@ -164,9 +169,8 @@ class Pecker_Lexer
             } elseif(T_CLOSE_TAG === $i) {
                 $tokenMap[$i] = ord(';');
                 // and the others can be mapped directly
-            } elseif ('UNKNOWN' !== ($name = token_name($i))
-            && defined($name = 'Pecker_Parser::' . $name)
-            ) {
+            } elseif ('UNKNOWN' !== ($name = token_name($i)) && defined($name = 'Pecker_Parser::' . $name) )
+            {
                 $tokenMap[$i] = constant($name);
             }
         }
