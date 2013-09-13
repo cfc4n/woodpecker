@@ -15,7 +15,7 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         Parser
- * @version         $Id: Parser.php 1 2013-09-12 03:45:27Z cfc4n $
+ * @version         $Id: Parser.php 8 2013-09-13 06:36:32Z cfc4n $
  */
 
 class Pecker_Parser
@@ -1194,6 +1194,47 @@ class Pecker_Parser
         return $res;
     }
 
+    /**
+     * get a piece token of the token after $k,and end with ; OR T_CLOSE_TAG
+     * @param int $k
+     * @return string
+     */
+    public function getPieceToken($k)
+    {
+        $str = '';
+        for ($i = 1;; $i ++)
+        {
+            if (isset($this->tokens[$k + $i]))
+            {
+                if (is_array($this->tokens[$k + $i]))
+                {
+                    if ($this->tokens[$k + $i][0] == T_WHITESPACE)
+                    {
+                        continue;
+                    } elseif($this->tokens[$k + $i][0] == T_CLOSE_TAG)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        $str .= trim(trim($this->tokens[$k + $i][1],'"'),'\'');
+                    }
+                } else
+                {
+                    if ($this->tokens[$k + $i] == ';')
+                    {
+                        break;
+                    }
+                    $str .= $this->tokens[$k + $i];
+                }
+            } else
+            {
+                break;
+            }
+        }
+        return $str;
+    }
+    
     /**
      * get all tokens
      * @return array

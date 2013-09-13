@@ -13,7 +13,7 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         Scanner
- * @version         $Id: Scanner.php 3 2013-09-12 10:36:47Z cfc4n $
+ * @version         $Id: Scanner.php 8 2013-09-13 06:36:32Z cfc4n $
  */
 class Pecker_Scanner
 {
@@ -183,6 +183,17 @@ class Pecker_Scanner
                             {
                                 $this->report->catchLog($token[1], $token[2]);
                             }
+                        }
+                        break;
+                    case T_INCLUDE:
+                    case T_INCLUDE_ONCE:
+                    case T_REQUIRE:
+                    case T_REQUIRE_ONCE:
+                        $infile = $this->parser->getPieceToken($k);
+                        $fileinfo = pathinfo($infile);
+                        if (!isset($this->extend[$fileinfo['extension']]))
+                        {
+                            $this->report->catchLog($token[1], $token[2]);
                         }
                         break;
                     default:
