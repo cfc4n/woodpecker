@@ -1,0 +1,11 @@
+Pecker Scanner-0.2 [2013-09-13]
+* Feature: 增加危险函数附近代码的展示功能
+* Feature: 增加对include\require系列语言结构的扫描检查
+* Bugfix：修复变量函数名检查误报BUG
+* Bugfix：修复类方法出现被扫描函数时，误报问题
+
+Pecker Scanner-0.1 [2013-09-12]
+* Feature: 支持对扫描的文件拓展名，文件路径的自定义配置，自定义扫描关键字配置。
+* Feature: 实现对变量函数的扫描检查
+* Feature: 实现对eval语言结构的扫描检查
+* Feature: 实现扫描报告输出
