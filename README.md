@@ -1,4 +1,4 @@
-pecker
+Pecker Scanner
 ======
 
 A scanner named pecker, written in php,It can check dangerous functions with lexical analysis.
@@ -26,23 +26,73 @@ Main:
 
 Result:
 ```php
-    foreach ($result as $k => $v)
-    {
-        if ($v['parser'] === false)
-        {
-            echo $k,' ',$v['message'];
-        }
-        else 
-        {
-            if (count($v['function']) > 0)
-            {
-                foreach ($v['function'] as $func => $line)
-                {
-                    echo $k,' found function "',$func, '" in line ',implode(', ', $line),".\n";
-                }
-            }
-        }
-    }
+Array
+(
+    [Pecker\test\1.php] => Array
+        (
+            [parser] => 1
+            [message] => 
+            [function] => Array
+                (
+                    [eval] => Array
+                        (
+                            [0] => Array
+                                (
+                                    [line] => 23
+                                    [code] => (       //get it
+gzinflate    ( $str   ($str1)))
+                                )
+
+                            [1] => Array
+                                (
+                                    [line] => 35
+                                    [code] => ('$str = time();')
+                                )
+
+                        )
+
+                    [exec] => Array
+                        (
+                            [0] => Array
+                                (
+                                    [line] => 25
+                                    [code] => ('dir')
+                                )
+
+                            [1] => Array
+                                (
+                                    [line] => 36
+                                    [code] => ('dir')
+                                )
+
+                        )
+
+                )
+
+        )
+
+    [Pecker\test\111.php] => Array
+        (
+            [parser] => 1
+            [message] => 
+            [function] => Array
+                (
+                )
+
+        )
+
+    [Pecker\test\3.php] => Array
+        (
+            [parser] => 1
+            [message] => 
+            [function] => Array
+                (
+                )
+
+        )
+
+)
+
 ```
 
 Info
