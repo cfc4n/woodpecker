@@ -15,7 +15,7 @@
  * @package         demo
  * @version         $Id: index.php 9 2013-09-13 07:54:47Z cfc4n $
  */
-
+set_time_limit(0);
 require dirname(__FILE__) . '/Pecker/Autoloader.php';
 Pecker_Autoloader::register();    //register autoloader
 
@@ -62,7 +62,8 @@ try {
                     $html1 = '';
                     foreach ($line as $c)
                     {
-                        $html1 .= 'line '.$c['line'].' :'.'<span class="code" title="'.$func.' '.htmlspecialchars($c['code']).'">'.$func.' '.htmlspecialchars(substr($c['code'],0,50)).'</span><br/>';
+                        $html1 .= 'line '.$c['line'].' :'.'<span class="code" title="'.$func.' '.htmlspecialchars($c['codemore']).'">'.$func.' ';
+                        $html1 .= htmlspecialchars(substr($c['codemore'],0,50)).'</span><span style="display:none;">hash :'.md5($c['codeless']).'</span><br/>';
                     }
                     $html .='<td>'.$func.'</td> <td>'.$html1.'</td> <td align="center"> - </td></tr>';
                 }

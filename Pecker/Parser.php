@@ -1247,7 +1247,7 @@ class Pecker_Parser
      */
     public function getPieceTokenAll ($k)
     {
-        $str = '';
+        $str = $str1 = '';
         for ($i = 1;; $i ++)
         {
             if (isset($this->tokens[$k + $i]))
@@ -1258,6 +1258,10 @@ class Pecker_Parser
                     {
                         break;
                     }
+                    if (!in_array($this->tokens[$k + $i][0],array(T_WHITESPACE,T_COMMENT,T_DOC_COMMENT,T_INLINE_HTML,T_ECHO,T_ML_COMMENT)))
+                    {
+                    	$str1 .= $this->tokens[$k + $i][1];
+                    }
                     $str .= $this->tokens[$k + $i][1];
                 }
                 else
@@ -1267,6 +1271,7 @@ class Pecker_Parser
                         break;
                     }
                     $str .= $this->tokens[$k + $i];
+                    $str1 .= $this->tokens[$k + $i];
                 }
             }
             else
@@ -1274,7 +1279,7 @@ class Pecker_Parser
                 break;
             }
         }
-        return $str;
+        return array('more'=>$str,'less'=>$str1);
     }
         
     /**

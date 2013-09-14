@@ -35,11 +35,11 @@ class Pecker_Loger
         $this->result[$this->file]['message'] = $msg;
     }
     
-    public function catchLog($func, $line, $code = '')
+    public function catchLog($func, $line, array $code =array('more'=>'', 'less'=>''))
     {
         $this->result[$this->file]['parser'] = true;
         $this->result[$this->file]['function'][$func] = isset($this->result[$this->file]['function'][$func]) ? $this->result[$this->file]['function'][$func] : array();
-        $this->result[$this->file]['function'][$func][] = array('line'=>$line,'code'=>$code);
+        $this->result[$this->file]['function'][$func][] = array('line'=>$line,'codemore'=>$code['more'], 'codeless'=>$code['less']);
     }
     
     public function getReport()

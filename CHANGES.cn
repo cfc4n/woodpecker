@@ -1,3 +1,8 @@
+Pecker Scanner-0.2.1 [2013-09-14]
+* Feature: 增加危险函数附近代码的去除空白字符、行注视、段注释之后的token的hash生成，便于后续云判断，跟服务器校对该hash是否已经被举报为木马
+* Bugfix：修复变量函数名检查误报BUG
+* Bugfix：修复执行超时问题
+
 Pecker Scanner-0.2 [2013-09-13]
 * Feature: 增加危险函数附近代码的展示功能
 * Feature: 增加对include\require系列语言结构的扫描检查

@@ -168,6 +168,13 @@ class Pecker_Scanner
                         }
                         break;
                     case T_VARIABLE:
+                    	$ntoken = $this->parser->getNextToken($k);
+                    	$ptoken = $this->parser->getPreToken($k);
+                    	if ($ntoken === '(' && $ptoken != '->' && $ptoken != '::' && $ptoken != 'function')
+                    	{
+                    		$this->report->catchLog($token[1], $token[2],$this->parser->getPieceTokenAll($k));
+                    	}
+                    	break;
                     case T_STRING:
                         if (isset($this->function[$token[1]]))
                         {
