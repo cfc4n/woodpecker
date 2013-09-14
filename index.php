@@ -22,7 +22,7 @@ Pecker_Autoloader::register();    //register autoloader
 $config = array(
     'scandir' => dirname(__FILE__).DIRECTORY_SEPARATOR.'test',
     'extend' => array('php','inc','php5'),
-    'function' => array('exec','system','create_function','passthru','shell_exec','proc_open','popen','curl_exec','parse_ini_file','show_source'),
+    'function' => array('exec','system','create_function','passthru','shell_exec','proc_open','popen','curl_exec','parse_ini_file','show_source','assert'),
 );
 
 try {
@@ -63,7 +63,7 @@ try {
                     foreach ($line as $c)
                     {
                         $html1 .= 'line '.$c['line'].' :'.'<span class="code" title="'.$func.' '.htmlspecialchars($c['codemore']).'">'.$func.' ';
-                        $html1 .= htmlspecialchars(substr($c['codemore'],0,50)).'</span><span style="display:none;">hash :'.md5($c['codeless']).'</span><br/>';
+                        $html1 .= htmlspecialchars(substr($c['codemore'],0,50)).'</span><span style="display:none;">hash :'.base64_encode($c['codeless']).'</span><br/>';
                     }
                     $html .='<td>'.$func.'</td> <td>'.$html1.'</td> <td align="center"> - </td></tr>';
                 }

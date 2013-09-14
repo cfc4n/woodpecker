@@ -935,6 +935,7 @@ class Pecker_Parser
     protected $lexer;
     protected $errMsg;
     private $tokens;
+    private $tokensSkip = array(T_WHITESPACE,T_COMMENT,T_DOC_COMMENT,T_ML_COMMENT);
 
     /**
      * Creates a parser instance.
@@ -1135,7 +1136,7 @@ class Pecker_Parser
             {
                 if (is_array($this->tokens[$k+$i]))
                 {
-                    if ($this->tokens[$k+$i][0] == T_WHITESPACE)
+                    if (in_array($this->tokens[$k+$i][0],$this->tokensSkip))
                     {
                         continue;
                     }
@@ -1173,7 +1174,7 @@ class Pecker_Parser
             {
                 if (is_array($this->tokens[$k - $i]))
                 {
-                    if ($this->tokens[$k - $i][0] == T_WHITESPACE)
+                    if (in_array($this->tokens[$k+$i][0],$this->tokensSkip))
                     {
                         continue;
                     } else

