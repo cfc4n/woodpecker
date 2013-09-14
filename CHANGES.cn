@@ -1,3 +1,7 @@
+Pecker Scanner-0.2.2 [2013-09-14 23:00]
+* Feature: 增加assert函数到默认检测列表。 (感谢bgho4t的反馈)
+* Bugfix：修复危险函数后面用段注释、区块注释分割时，被漏掉的BUG。(感谢bgho4t的反馈)
+
 Pecker Scanner-0.2.1 [2013-09-14]
 * Feature: 增加危险函数附近代码的去除空白字符、行注视、段注释之后的token的hash生成，便于后续云判断，跟服务器校对该hash是否已经被举报为木马
 * Bugfix：修复变量函数名检查误报BUG
