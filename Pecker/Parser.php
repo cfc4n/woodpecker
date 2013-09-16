@@ -15,7 +15,7 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         Parser
- * @version         $Id: Parser.php 12 2013-09-16 07:16:06Z cfc4n $
+ * @version         $Id: Parser.php 13 2013-09-16 08:36:20Z cfc4n $
  */
 
 class Pecker_Parser
@@ -1249,13 +1249,14 @@ class Pecker_Parser
     public function getPieceTokenAll ($k)
     {
         $str = $str1 = '';
+        $l = $r = 0;
         for ($i = 1;; $i ++)
         {
             if (isset($this->tokens[$k + $i]))
             {
                 if (is_array($this->tokens[$k + $i]))
                 {
-                     if (in_array($this->tokens[$k + $i][0],array(T_CLOSE_TAG)))
+                     if (in_array($this->tokens[$k + $i][0],array(T_CLOSE_TAG))|| ($l != 0 && $l == $r))
                     {
                         break;
                     }
@@ -1267,9 +1268,17 @@ class Pecker_Parser
                 }
                 else
                 {
-                    if ($this->tokens[$k + $i] == ';')
+                    if ($this->tokens[$k + $i] == ';' || ($l != 0 && $l == $r))
                     {
                         break;
+                    }
+                    if ($this->tokens[$k + $i] == '(')
+                    {
+                        $l ++;
+                    }
+                    if ($this->tokens[$k + $i] == ')')
+                    {
+                        $r ++;
                     }
                     $str .= $this->tokens[$k + $i];
                     $str1 .= $this->tokens[$k + $i];

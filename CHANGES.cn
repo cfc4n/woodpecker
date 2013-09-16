@@ -1,3 +1,9 @@
+Pecker Scanner-0.2.3 [2013-09-16]
+* Improve: 精确只获取恶意函数中，参数部分的token。
+* Bugfix: 变量类名也捕获bug。
+* Bugfix: 修复捕获T_ENCAPSED_AND_WHITESPACE中变量函数的bug。
+* Buffix: 修复计算当前token的下一个token时，key计算错误。
+
 Pecker Scanner-0.2.2 [2013-09-14 23:00]
 * Feature: 增加assert函数到默认检测列表。 (感谢bgho4t的反馈)
 * Bugfix：修复危险函数后面用段注释、区块注释分割时，被漏掉的BUG。(感谢bgho4t的反馈)
