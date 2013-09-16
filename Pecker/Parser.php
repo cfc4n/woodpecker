@@ -15,7 +15,7 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         Parser
- * @version         $Id: Parser.php 9 2013-09-13 07:54:47Z cfc4n $
+ * @version         $Id: Parser.php 12 2013-09-16 07:16:06Z cfc4n $
  */
 
 class Pecker_Parser
@@ -935,7 +935,7 @@ class Pecker_Parser
     protected $lexer;
     protected $errMsg;
     private $tokens;
-    private $tokensSkip = array(T_WHITESPACE,T_COMMENT,T_DOC_COMMENT,T_ML_COMMENT);
+    private $tokensSkip = array(T_WHITESPACE,T_COMMENT,T_DOC_COMMENT,T_ENCAPSED_AND_WHITESPACE);
 
     /**
      * Creates a parser instance.
@@ -1174,7 +1174,7 @@ class Pecker_Parser
             {
                 if (is_array($this->tokens[$k - $i]))
                 {
-                    if (in_array($this->tokens[$k+$i][0],$this->tokensSkip))
+                    if (in_array($this->tokens[$k-$i][0],$this->tokensSkip))
                     {
                         continue;
                     } else
@@ -1200,7 +1200,7 @@ class Pecker_Parser
      * @param int $k
      * @return string
      */
-    public function getPieceToken($k)
+    public function getFilepathToken($k)
     {
         $str = '';
         for ($i = 1;; $i ++)
@@ -1255,13 +1255,13 @@ class Pecker_Parser
             {
                 if (is_array($this->tokens[$k + $i]))
                 {
-                     if ($this->tokens[$k + $i][0] == T_CLOSE_TAG)
+                     if (in_array($this->tokens[$k + $i][0],array(T_CLOSE_TAG)))
                     {
                         break;
                     }
-                    if (!in_array($this->tokens[$k + $i][0],array(T_WHITESPACE,T_COMMENT,T_DOC_COMMENT,T_INLINE_HTML,T_ECHO,T_ML_COMMENT)))
+                    if (!in_array($this->tokens[$k + $i][0],array(T_WHITESPACE,T_COMMENT,T_DOC_COMMENT,T_INLINE_HTML,T_ECHO,T_ENCAPSED_AND_WHITESPACE)))
                     {
-                    	$str1 .= $this->tokens[$k + $i][1];
+                        $str1 .= $this->tokens[$k + $i][1];
                     }
                     $str .= $this->tokens[$k + $i][1];
                 }

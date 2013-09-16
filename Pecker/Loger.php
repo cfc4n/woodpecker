@@ -13,7 +13,7 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         Scanner
- * @version         $Id: Loger.php 9 2013-09-13 07:54:47Z cfc4n $
+ * @version         $Id: Loger.php 11 2013-09-16 03:27:55Z cfc4n $
  */
 
 class Pecker_Loger

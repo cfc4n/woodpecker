@@ -25,11 +25,6 @@ gzinflate    ( $str   ($str1)));    //get it
 exec('dir');        //get it
 class a 
 {
-    function __construct()
-    {
-        
-    }
-    
     function exec()                 //pass
     {
         eval('$str = time();');     //get it
@@ -38,14 +33,17 @@ class a
 }
 include dirname(__FILE__)."/1";    //get it
 include_once "/2.php";    //pass
-require "/3.jpg";    //get is
+require "/3.jpg";    //get it
 require_once dirname(__FILE__)."/4.inc";    //pass
 require_once("config.cache.inc.php");    //pass
 $func = "s"."ystem";
 $func($_GET['cmd']);
-preg_replace('/test/ies', 'test', $func);
-preg_replace('/test/is', 'test', $func);
-//eval($_GET['test'])
-system/**/(“whoami”);
-assert('phpinfo()');
+preg_replace('/test/ies', 'test', $func);    //@todo
+preg_replace('/test/is', 'test', $func);    //@todo
+//eval($_GET['test'])    //pass
+system/**/("whoami");    //get it
+assert('phpinfo()');    //get it
+$str1 = "$func({$_GET['cmd']})</div>\r\n";    //pass
+$ct = 'a';
+$instance = new $ct ( );    //pass
 ?>

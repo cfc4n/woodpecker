@@ -13,7 +13,7 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         Scanner
- * @version         $Id: Scanner.php 9 2013-09-13 07:54:47Z cfc4n $
+ * @version         $Id: Scanner.php 12 2013-09-16 07:16:06Z cfc4n $
  */
 class Pecker_Scanner
 {
@@ -168,13 +168,13 @@ class Pecker_Scanner
                         }
                         break;
                     case T_VARIABLE:
-                    	$ntoken = $this->parser->getNextToken($k);
-                    	$ptoken = $this->parser->getPreToken($k);
-                    	if ($ntoken === '(' && $ptoken != '->' && $ptoken != '::' && $ptoken != 'function')
-                    	{
-                    		$this->report->catchLog($token[1], $token[2],$this->parser->getPieceTokenAll($k));
-                    	}
-                    	break;
+                        $ntoken = $this->parser->getNextToken($k);
+                        $ptoken = $this->parser->getPreToken($k);
+                        if ($ntoken === '(' && $ptoken != '->' && $ptoken !== '::' && $ptoken !== 'function' && $ptoken !== 'new')
+                        {
+                            $this->report->catchLog($token[1], $token[2],$this->parser->getPieceTokenAll($k));
+                        }
+                        break;
                     case T_STRING:
                         if (isset($this->function[$token[1]]))
                         {
@@ -192,7 +192,7 @@ class Pecker_Scanner
                     case T_REQUIRE_ONCE:
                         if (isset($this->function[$token[1]]))
                         {
-                            $infile = $this->parser->getPieceToken($k);
+                            $infile = $this->parser->getFilepathToken($k);
                             $fileinfo = pathinfo($infile);
                             if (!isset($this->extend[$fileinfo['extension']]))
                             {
