@@ -13,9 +13,10 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         demo
- * @version         $Id: index.php 9 2013-09-13 07:54:47Z cfc4n $
+ * @version         $Id: index.php 17 2013-09-17 11:17:35Z cfc4n $
  */
 set_time_limit(0);
+define('MAX_STRLEN', 500);    //max length value of hash string
 require dirname(__FILE__) . '/Pecker/Autoloader.php';
 Pecker_Autoloader::register();    //register autoloader
 
@@ -63,7 +64,15 @@ try {
                     foreach ($line as $c)
                     {
                         $html1 .= 'line '.$c['line'].' :'.'<span class="code" title="'.$func.' '.htmlspecialchars($c['codemore']).'">'.$func.' ';
-                        $html1 .= htmlspecialchars(substr($c['codemore'],0,50)).'</span><span style="display:none;">hash :'.base64_encode($c['codeless']).'</span><br/>';
+                        $strLess = urlencode(base64_encode($func.$c['codeless']));
+                        if (strlen($strLess) > MAX_STRLEN)
+                        {
+                            $html1 .= htmlspecialchars(substr($c['codemore'],0,50)).'</span><input type="hidden" hash_type="md5" value="'.md5($func.$c['codeless']).'"/><br/>';
+                        }
+                        else
+                        {
+                            $html1 .= htmlspecialchars(substr($c['codemore'],0,50)).'</span><input type="hidden" hash_type="code" value="'.$strLess.'"/><br/>';
+                        }
                     }
                     $html .='<td>'.$func.'</td> <td>'.$html1.'</td> <td align="center"> - </td></tr>';
                 }

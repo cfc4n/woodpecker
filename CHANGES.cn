@@ -1,3 +1,6 @@
+Pecker Scanner-0.2.4 [2013-09-17]
+* Feature: 云判断支持(参数部分)
+
 Pecker Scanner-0.2.3 [2013-09-16]
 * Improve: 精确只获取恶意函数中，参数部分的token。
 * Bugfix: 变量类名也捕获bug。

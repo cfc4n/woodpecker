@@ -13,7 +13,7 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         Scanner
- * @version         $Id: Scanner.php 12 2013-09-16 07:16:06Z cfc4n $
+ * @version         $Id: Scanner.php 15 2013-09-17 09:18:48Z cfc4n $
  */
 class Pecker_Scanner
 {
@@ -137,6 +137,23 @@ class Pecker_Scanner
     {
         $this->report->setFile($file);
         $bRS = $this->parser->parse(file_get_contents($file));
+        if(false === $bRS)
+        {
+            $this->report->errorLog($this->parser->getErrmsg());
+            return false;
+        }
+        $this->checkTokens($this->parser->getTokens());
+    }
+    
+    /**
+     * scan code string
+     * @param string $code
+     * @return boolean
+     */
+    public function ScanCode($code)
+    {
+        $this->report->setFile('temp');
+        $bRS = $this->parser->parse($code);
         if(false === $bRS)
         {
             $this->report->errorLog($this->parser->getErrmsg());
