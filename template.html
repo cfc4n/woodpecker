@@ -9,16 +9,21 @@ table{width:80%;clear:both;margin:3rem auto;border-collapse:collapse;box-shadow:
 table caption,table th{padding:1rem;vertical-align:middle;font-family:微软雅黑,Tahoma,Arial,Helvetica,sans-serif;color:#999;border:1px solid #ccc;background-color:#F8F8F8;}
 table caption{padding-top:0;border:none;background-color:transparent;text-align:left;color:#555;font-weight:bold;text-shadow:1px 1px 1px #fff;padding-left:50px;}
 table .string{background:#B1FF9E;border-bottom:1px solid #66CC00;margin:0 5px;font-size:13px;font-family:Arial;}
-table .code{background:#f9f2a7;border-bottom:1px solid #F48C12;margin:0 5px;font-size:13px;font-family:Arial;}
+table .code{background:#eec;border-bottom:1px solid #F48C12;margin:0 5px;font-size:13px;font-family:Arial;}
 table td{padding:1rem;vertical-align:middle;color:#555;border:1px solid #d7d7d7;background-color:rgba(255,255,255,0.3);font-weight:normal;line-height:1.5rem;font-size:1.2rem}
 table tr .focus{text-shadow:1px 1px 1px #fff;text-align:center;color:#F48C12;font:lighter 1.5rem/1.5rem Monaco,'MonacoRegular',monospace;}
 table code{color:#66CC00;background-color:transparent}
 table p{clear:both}
 h1,h2,h3,h4,dt{hyphens:none;-webkit-hyphens:none;-moz-hyphens:none}
+.button {background: none repeat scroll 0 0 #2680E9;border: 1px solid #66ACFF;color: #FFFFFF;font-weight: bold;cursor: pointer;text-align: center; width: 400px;box-shadow: 0 2px 2px #ccc;font-size: 18px;height: 24px;padding: 8px;text-decoration: none !important;display: block;margin:0 auto;border-radius: 2px;}
+.safe{background:#0f0;width:30px;margin:0 5px;padding:5px;font-size:13px;}
+.unsafe{background:#f00;width:30px;margin:0 5px;padding:5px;font-size:13px;}
+.unknow{background:#ff0;width:30px;margin:0 5px;padding:5px;font-size:13px;}
 </style>
 </head>
 
 <body>
+<form>
 <table dir="ltr" border="1" summary="Scan result">
 	<caption>Scan path: {PATH} <br/> extensions:{EXTEND}<br/>keywords:{FUNCTION}</caption>
 	<colgroup width="40%" />
@@ -35,5 +40,89 @@ h1,h2,h3,h4,dt{hyphens:none;-webkit-hyphens:none;-moz-hyphens:none}
 		{RESULT}
 	</tbody>
 </table>
+<input type="hidden" value="0" id="is_check"/>
+</form>
+<span id="run" value="" class="button">Confirm with Pecker Scanner server</span>
 </body>
 </html>
+
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+<!--
+$( "#run" ).click(function() {
+    if ($("#is_check").val() == "1")
+    {
+        return false;
+    }
+    $("#is_check").val("1");
+    var server = "http://pecker.cnxct.com/index.php/Token";
+    $("input", document.forms[0]).each(function(){
+        var type = this.value;
+        var val = this.title;
+        var method = '';
+        var md5 = this.className;
+        if (type == 'md5')
+        {
+            method = '/md5';
+            val = this.className;
+        }
+        if (val != '')
+        {
+            $.ajax({
+                 url:server+method,
+                 type:"get",
+                 async: false,
+                 dataType:"jsonp",
+                 jsonp:"pecker_jsonp",
+                 data: {t: val,md5: md5},
+                 success:function(result){
+                 }
+            });
+        }
+    }); 
+});
+function pecker_jsonp(result)
+{
+    if (result.ret == 1000)
+    {
+        $.each(result.data,function(i,v){
+        var html = '';
+            $.each(v.version,function(k,ver){
+            console.log(ver);
+                switch (ver.status)
+                {
+                case "1":
+                    html += "<span class=\"safe\" title=\"Version:"+ver.version+"\nPath:"+ver.path+"\">√&nbsp;&nbsp;Safe.</span>";
+                    break;
+                case "2":
+                    html += "<span class=\"unsafe\" title=\"Version:"+ver.version+"\nPath:"+ver.path+"\">X&nbsp;&nbsp;Unsafe.</span>";
+                    break;
+                default:
+                    html += "<span class=\"unknow\" title=\"Version:"+ver.version+"\nPath:"+ver.path+"\">?&nbsp;&nbsp;waiting.</span>";
+                }
+             });
+                $("."+i).each(function(){
+                    if($("."+i).val() == "md5" || $("."+i).val() =="code")
+                    {
+                        $("."+i).after(html);
+                        $("."+i).val("done")
+                    }
+                });
+               
+         });
+    }
+    else
+    {
+        $.each(result.data,function(i,v){
+            $("."+i).each(function(){
+                
+                if($("."+i).val() == "md5" || $("."+i).val() =="code")
+                {
+                    $("."+i).after("<span class=\"unknow\" title=\""+result.msg+"\">?&nbsp;&nbsp;Unknow.</span>");
+                    $("."+i).val("done")
+                }
+            })
+         });
+    }
+}
+</script>
