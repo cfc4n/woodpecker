@@ -23,7 +23,7 @@ Pecker_Autoloader::register();    //register autoloader
 $config = array(
     'scandir' => dirname(__FILE__).DIRECTORY_SEPARATOR.'test',
     'extend' => array('php','inc','php5'),
-    'function' => array('exec','system','create_function','passthru','shell_exec','proc_open','popen','curl_exec','parse_ini_file','show_source','assert'),
+    'function' => array('exec','system','create_function','passthru','shell_exec','proc_open','popen','curl_exec','parse_ini_file','show_source','assert','extract'),
 );
 
 try {
