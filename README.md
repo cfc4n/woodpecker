@@ -10,7 +10,7 @@ Config:
     $config = array(
         'scandir' => dirname(__FILE__),
         'extend' => array('php','inc','php5'),
-        'function' => array('exec','system','reate_function','passthru','shell_exec','proc_open','popen','curl_exec','parse_ini_file','show_source'),
+        'function' => array('exec','system','create_function','passthru','shell_exec','proc_open','popen','curl_exec','parse_ini_file','show_source','include','preg_replace'),
     );
 ```
 
@@ -97,13 +97,13 @@ gzinflate    ( $str   ($str1)))
 
 Info
 =====
-+ Home Page:[http://www.cnxct.com/pecker-scanner/][1].
-+ WeiBo:[http://weibo.com/n/CFC4N][2].
++ Home Page:[http://www.cnxct.com/pecker-scanner/][1]
++ WeiBo:[http://weibo.com/n/CFC4N][2]
 
 Reference
 =====
-+ [PHPPHP][3].
-+ [PHP-Parser][4].
++ [PHPPHP][3]
++ [PHP-Parser][4]
 
 [1]:http://www.cnxct.com/pecker-scanner/
 [2]:http://weibo.com/n/CFC4N
