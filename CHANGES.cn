@@ -1,3 +1,7 @@
+Pecker Scanner-0.3.1 [2013-09-26]
+* Feature: 增加file_put_contents、call_user_func_array、call_user_func函数到检测列表
+* Feature: 增加preg_replace的e修饰符回调函数到检测列表
+
 Pecker Scanner-0.3.0 [2013-09-22]
 * Feature: 服务器云判断确认恶意代码功能
 
