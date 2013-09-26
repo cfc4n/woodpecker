@@ -13,7 +13,7 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         Scanner
- * @version         $Id: Scanner.php 15 2013-09-17 09:18:48Z cfc4n $
+ * @version         $Id: Scanner.php 22 2013-09-26 09:44:06Z cfc4n $
  */
 class Pecker_Scanner
 {
@@ -199,7 +199,18 @@ class Pecker_Scanner
                             $ptoken = $this->parser->getPreToken($k);
                             if ($ntoken === '(' && $ptoken != '->' && $ptoken != '::' && $ptoken != 'function')
                             {
-                                $this->report->catchLog($token[1], $token[2],$this->parser->getPieceTokenAll($k));
+                                if($token[1] == 'preg_replace')
+                                {
+                                    $strRegex = $this->parser->getNextToken($k+1);
+                                    if($this->_hasCallback($strRegex))
+                                    {
+                                        $this->report->catchLog($token[1], $token[2],$this->parser->getPieceTokenAll($k));
+                                    }
+                                }
+                                else
+                                {
+                                    $this->report->catchLog($token[1], $token[2],$this->parser->getPieceTokenAll($k));
+                                }
                             }
                         }
                         break;
@@ -230,6 +241,32 @@ class Pecker_Scanner
     public function getReport()
     {
         return $this->report->getReport();
+    }
+    
+    /**
+     * grep modifier 'e' in regex string
+     * @param string $str
+     * @return boolean
+     */
+    private function _hasCallback($str)
+    {
+        $str = trim($str);
+        $a = subStr(subStr($str,1),0,-1);
+        $start_delimiter = $end_delimiter = $a{0};
+        $strabc = '([{< )]}>';
+        if (false !== ($num = strpos($strabc,$start_delimiter)))
+        {
+            $end_delimiter = $strabc{$num+5};
+        }
+        if (false !== ($num1 = strrpos($str,$end_delimiter)))
+        {
+            $modifiers = substr($str,$num1+1);
+        }
+        if (false !== strpos($modifiers,'e'))
+        {
+            return true;
+        }
+        return false;
     }
 }
 
