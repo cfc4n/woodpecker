@@ -13,7 +13,7 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         Scanner
- * @version         $Id: Scanner.php 22 2013-09-26 09:44:06Z cfc4n $
+ * @version         $Id: Scanner.php 23 2013-09-27 06:23:11Z cfc4n $
  */
 class Pecker_Scanner
 {
@@ -251,6 +251,10 @@ class Pecker_Scanner
     private function _hasCallback($str)
     {
         $str = trim($str);
+        if (substr($str,0,1) == '$')
+        {
+            return true;
+        }
         $a = subStr(subStr($str,1),0,-1);
         $start_delimiter = $end_delimiter = $a{0};
         $strabc = '([{< )]}>';
@@ -261,10 +265,10 @@ class Pecker_Scanner
         if (false !== ($num1 = strrpos($str,$end_delimiter)))
         {
             $modifiers = substr($str,$num1+1);
-        }
-        if (false !== strpos($modifiers,'e'))
-        {
-            return true;
+            if (false !== strpos($modifiers,'e'))
+            {
+                return true;
+            }
         }
         return false;
     }
