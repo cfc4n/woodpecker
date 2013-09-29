@@ -13,7 +13,7 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         Scanner
- * @version         $Id: Scanner.php 23 2013-09-27 06:23:11Z cfc4n $
+ * @version         $Id: Scanner.php 24 2013-09-29 06:15:58Z cfc4n $
  */
 class Pecker_Scanner
 {
@@ -218,7 +218,7 @@ class Pecker_Scanner
                     case T_INCLUDE_ONCE:
                     case T_REQUIRE:
                     case T_REQUIRE_ONCE:
-                        if (isset($this->function[$token[1]]))
+                        if (isset($this->function['include']) || isset($this->function['include_once']) || isset($this->function['require']) || isset($this->function['require_once']))
                         {
                             $infile = $this->parser->getFilepathToken($k);
                             $fileinfo = pathinfo($infile);
