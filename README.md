@@ -105,7 +105,12 @@ Reference
 + [PHPPHP][3]
 + [PHP-Parser][4]
 
+Other
+=====
++ [Pecker Scanner Server][5]
+
 [1]:http://www.cnxct.com/pecker-scanner/
 [2]:http://weibo.com/n/CFC4N
 [3]:https://github.com/ircmaxell/PHPPHP
 [4]:https://github.com/nikic/PHP-Parser
+[5]:https://github.com/cfc4n/pecker-server
