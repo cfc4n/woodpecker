@@ -13,12 +13,19 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         demo
- * @version         $Id: index.php 22 2013-09-26 09:44:06Z cfc4n $
+ * @version         $Id: index.php 25 2013-11-14 09:02:58Z cfc4n $
  */
 set_time_limit(0);
 define('MAX_STRLEN', 500);    //max length value of hash string
-require dirname(__FILE__) . '/Pecker/Autoloader.php';
-Pecker_Autoloader::register();    //register autoloader
+
+
+// require dirname(__FILE__) . '/Pecker/Autoloader.php';
+// Pecker_Autoloader::register();    //register autoloader
+
+// OR with lite
+
+require dirname(__FILE__) .'/PeckerLite/PeckerScanner.lite.php';
+
 
 $config = array(
     'scandir' => dirname(__FILE__).DIRECTORY_SEPARATOR.'test',
