@@ -20,6 +20,7 @@ $str = 'base64_decode';
 $str1 = '40pNzshXSFCJD3INDHUNDo\'"\"lOjE2wtlawt+MCAA== 
 eval (gzinflate(base64_decode("test")) ';   //pass
 file('2'.php);
+(require '1.dat').'.php';
 eval(       //get it
 gzinflate    ( $str   ($str1)));    //get it
 exec('dir');        //get it

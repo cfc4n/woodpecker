@@ -1649,7 +1649,7 @@ class Pecker_Parser
                     }
                 } else
                 {
-                    if ($this->tokens[$k + $i] == ';' || ($this->tokens[$k + $i] == ')' && $this->getNextToken($k + $i) == ';'))
+                    if ($this->tokens[$k + $i] == ';' || ($this->tokens[$k + $i] == ')' && $this->getNextToken($k + $i) == ';') || ($this->tokens[$k + $i] == ')' && $this->getNextToken($k + $i) == '.'))
                     {
                         break;
                     }

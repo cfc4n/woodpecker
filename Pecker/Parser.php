@@ -15,7 +15,7 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         Parser
- * @version         $Id: Parser.php 13 2013-09-16 08:36:20Z cfc4n $
+ * @version         $Id: Parser.php 27 2014-02-27 07:46:52Z cfc4n $
  */
 
 class Pecker_Parser
@@ -1222,7 +1222,7 @@ class Pecker_Parser
                     }
                 } else
                 {
-                    if ($this->tokens[$k + $i] == ';' || ($this->tokens[$k + $i] == ')' && $this->getNextToken($k + $i) == ';'))
+                    if ($this->tokens[$k + $i] == ';' || ($this->tokens[$k + $i] == ')' && $this->getNextToken($k + $i) == ';') || ($this->tokens[$k + $i] == ')' && $this->getNextToken($k + $i) == '.'))
                     {
                         break;
                     }
