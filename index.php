@@ -13,7 +13,7 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         demo
- * @version         $Id: index.php 25 2013-11-14 09:02:58Z cfc4n $
+ * @version         $Id: index.php 26 2014-02-27 07:07:05Z cfc4n $
  */
 set_time_limit(0);
 define('MAX_STRLEN', 500);    //max length value of hash string
@@ -30,7 +30,7 @@ require dirname(__FILE__) .'/PeckerLite/PeckerScanner.lite.php';
 $config = array(
     'scandir' => dirname(__FILE__).DIRECTORY_SEPARATOR.'test',
     'extend' => array('php','inc','php5'),
-    'function' => array('exec','system','create_function','passthru','shell_exec','proc_open','popen','curl_exec','parse_ini_file','show_source','assert','file_put_contents','call_user_func_array','call_user_func','preg_replace'),
+    'function' => array('exec','system','create_function','passthru','shell_exec','proc_open','popen','curl_exec','parse_ini_file','show_source','assert','file_put_contents','call_user_func_array','call_user_func','preg_replace','include'),
 );
 
 try {
