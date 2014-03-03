@@ -13,7 +13,7 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         Scanner
- * @version         $Id: Scanner.php 24 2013-09-29 06:15:58Z cfc4n $
+ * @version         $Id: Scanner.php 28 2014-03-03 03:30:23Z cfc4n $
  */
 class Pecker_Scanner
 {
@@ -191,6 +191,14 @@ class Pecker_Scanner
                         {
                             $this->report->catchLog($token[1], $token[2],$this->parser->getPieceTokenAll($k));
                         }
+                        elseif ($ntoken === '{' || $ntoken === '[' )
+                        {
+                            $nt = $this->parser->getVariableToken($k);
+                            if ($nt['token'] === '(')
+                            {
+                                $this->report->catchLog($token[1].$nt['func'], $token[2],$this->parser->getPieceTokenAll($nt['key']+$k));
+                            }
+                        }
                         break;
                     case T_STRING:
                         if (isset($this->function[$token[1]]))
@@ -229,6 +237,14 @@ class Pecker_Scanner
                         }
                         break;
                     default:
+                }
+            }
+            elseif($token === '$')
+            {
+                $nt = $this->parser->getVariableToken($k);
+                if ($nt['token'] === '(')
+                {
+                    $this->report->catchLog('$'.$nt['func'], 0,$this->parser->getPieceTokenAll($nt['key']+$k));
                 }
             }
         }

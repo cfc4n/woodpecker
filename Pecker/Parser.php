@@ -15,7 +15,7 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         Parser
- * @version         $Id: Parser.php 27 2014-02-27 07:46:52Z cfc4n $
+ * @version         $Id: Parser.php 28 2014-03-03 03:30:23Z cfc4n $
  */
 
 class Pecker_Parser
@@ -936,6 +936,7 @@ class Pecker_Parser
     protected $errMsg;
     private $tokens;
     private $tokensSkip = array(T_WHITESPACE,T_COMMENT,T_DOC_COMMENT,T_ENCAPSED_AND_WHITESPACE);
+    private $tokensVariable = array('{','}','[',']','.');
 
     /**
      * Creates a parser instance.
@@ -1122,6 +1123,46 @@ class Pecker_Parser
         return true;
     }
     
+    /**
+     * get next tokens after a variable
+     * @param int $k
+     * @return array
+     */
+    public function getVariableToken($k)
+    {
+        $result = array();
+        $res = '';
+        $fun = '';
+        for ($i=1;;$i++)
+        {
+            if (isset($this->tokens[$k+$i]))
+            {
+                if (is_array($this->tokens[$k+$i]))
+                {
+                    $fun .= $this->tokens[$k+$i][1];
+                    continue;
+                }
+                else
+                {
+                    if (!in_array($this->tokens[$k+$i],$this->tokensVariable))
+                    {
+                        $res = $this->tokens[$k+$i];
+                        break;
+                    }
+                    $fun .= $this->tokens[$k+$i];
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
+        $result['token'] = $res;
+        $result['func'] = $fun;
+        $result['key'] = $i-1;
+        return $result;
+    }
+
     /**
      * get next tokens of $k without WHITESPACE
      * @param int $k

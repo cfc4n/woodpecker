@@ -194,6 +194,14 @@ class Pecker_Scanner
                         {
                             $this->report->catchLog($token[1], $token[2],$this->parser->getPieceTokenAll($k));
                         }
+                        elseif ($ntoken === '{' || $ntoken === '[' )
+                        {
+                            $nt = $this->parser->getVariableToken($k);
+                            if ($nt['token'] === '(')
+                            {
+                                $this->report->catchLog($token[1].$nt['func'], $token[2],$this->parser->getPieceTokenAll($nt['key']+$k));
+                            }
+                        }
                         break;
                     case T_STRING:
                         if (isset($this->function[$token[1]]))
@@ -232,6 +240,14 @@ class Pecker_Scanner
                         }
                         break;
                     default:
+                }
+            }
+            elseif($token === '$')
+            {
+                $nt = $this->parser->getVariableToken($k);
+                if ($nt['token'] === '(')
+                {
+                    $this->report->catchLog('$'.$nt['func'], 0,$this->parser->getPieceTokenAll($nt['key']+$k));
                 }
             }
         }
@@ -1363,6 +1379,7 @@ class Pecker_Parser
     protected $errMsg;
     private $tokens;
     private $tokensSkip = array(T_WHITESPACE,T_COMMENT,T_DOC_COMMENT,T_ENCAPSED_AND_WHITESPACE);
+    private $tokensVariable = array('{','}','[',']','.');
 
     /**
      * Creates a parser instance.
@@ -1547,6 +1564,46 @@ class Pecker_Parser
             }
         }
         return true;
+    }
+
+    /**
+     * get next tokens after a variable
+     * @param int $k
+     * @return array
+     */
+    public function getVariableToken($k)
+    {
+        $result = array();
+        $res = '';
+        $fun = '';
+        for ($i=1;;$i++)
+        {
+            if (isset($this->tokens[$k+$i]))
+            {
+                if (is_array($this->tokens[$k+$i]))
+                {
+                    $fun .= $this->tokens[$k+$i][1];
+                    continue;
+                }
+                else
+                {
+                    if (!in_array($this->tokens[$k+$i],$this->tokensVariable))
+                    {
+                        $res = $this->tokens[$k+$i];
+                        break;
+                    }
+                    $fun .= $this->tokens[$k+$i];
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
+        $result['token'] = $res;
+        $result['func'] = $fun;
+        $result['key'] = $i-1;
+        return $result;
     }
 
     /**
