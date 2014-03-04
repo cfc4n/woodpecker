@@ -1,3 +1,11 @@
+Pecker Scanner-0.4.1 [2014-03-04]
+* Bugfix：更改changes日志记录
+
+Pecker Scanner-0.4.0 [2014-03-03]
+* Bugfix：修复变量中使用"{" 和 "["的语法拼接成的变量函数的漏检。
+* Bugfix：修复引用文件语法后，下一个语法字符不是";"而拼接字符"."的语法。EG:(require '1.dat').'.php'; thanks for poker付 ( http://weibo.com/1776130645 )
+* Bugfix：添加 "include"到默认检测配置。
+
 Pecker Scanner-0.3.1 [2013-09-26]
 * Feature: 增加file_put_contents、call_user_func_array、call_user_func函数到检测列表
 * Feature: 增加preg_replace的e修饰符回调函数到检测列表
