@@ -15,7 +15,7 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         Parser
- * @version         $Id: Parser.php 28 2014-03-03 03:30:23Z cfc4n $
+ * @version         $Id: Parser.php 29 2014-03-06 12:55:31Z cfc4n $
  */
 
 class Pecker_Parser
@@ -936,7 +936,7 @@ class Pecker_Parser
     protected $errMsg;
     private $tokens;
     private $tokensSkip = array(T_WHITESPACE,T_COMMENT,T_DOC_COMMENT,T_ENCAPSED_AND_WHITESPACE);
-    private $tokensVariable = array('{','}','[',']','.');
+    private $tokensVariable = array('{','}');
 
     /**
      * Creates a parser instance.
@@ -1124,7 +1124,7 @@ class Pecker_Parser
     }
     
     /**
-     * get next tokens after a variable
+     * get next tokens after a variable,like curly syntax
      * @param int $k
      * @return array
      */
@@ -1144,7 +1144,7 @@ class Pecker_Parser
                 }
                 else
                 {
-                    if (!in_array($this->tokens[$k+$i],$this->tokensVariable))
+                    if (in_array($this->tokens[$k+$i],$this->tokensVariable))
                     {
                         $res = $this->tokens[$k+$i];
                         break;

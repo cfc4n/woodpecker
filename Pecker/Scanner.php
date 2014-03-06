@@ -13,7 +13,7 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         Scanner
- * @version         $Id: Scanner.php 28 2014-03-03 03:30:23Z cfc4n $
+ * @version         $Id: Scanner.php 29 2014-03-06 12:55:31Z cfc4n $
  */
 class Pecker_Scanner
 {
@@ -186,6 +186,7 @@ class Pecker_Scanner
                         break;
                     case T_VARIABLE:
                         $ntoken = $this->parser->getNextToken($k);
+//                         var_dump($token,$ntoken);exit();
                         $ptoken = $this->parser->getPreToken($k);
                         if ($ntoken === '(' && $ptoken != '->' && $ptoken !== '::' && $ptoken !== 'function' && $ptoken !== 'new')
                         {
@@ -241,8 +242,31 @@ class Pecker_Scanner
             }
             elseif($token === '$')
             {
+                /**
+                 * Zend_language_scanner.c : yy56 、yy61
+                 *
+                 $nt = $this->parser->getNextToken($k);
+                 switch ($nt)
+                 {
+                     case '$':
+                         break;
+                     case '\\':
+                         break;
+                     case '{':
+                         break;
+                     default:
+                 }
+                */
                 $nt = $this->parser->getVariableToken($k);
-                if ($nt['token'] === '(')
+                if ($nt['token'] === '{')
+                {
+                    $nt1 = $this->parser->getVariableToken($k+$nt['key']+1);
+                    if ($nt1['token'] === '}' && $this->parser->getNextToken($k+$nt['key']+$nt1['key']+2) === '(')
+                    {
+                        $this->report->catchLog('${'.$nt1['func'].'}', 0,$this->parser->getPieceTokenAll($nt1['key']+$k+1));
+                    }
+                }
+                elseif($nt['token'] === '(')
                 {
                     $this->report->catchLog('$'.$nt['func'], 0,$this->parser->getPieceTokenAll($nt['key']+$k));
                 }

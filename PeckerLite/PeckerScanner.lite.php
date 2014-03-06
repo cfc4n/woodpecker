@@ -15,7 +15,7 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         Lexer All
- * @version         $Id: PeckerScanner.lite.php 1 2013-10-28 10:34:53Z cfc4n $
+ * @version         $Id: PeckerScanner.lite.php 29 2014-03-06 12:55:31Z cfc4n $
  */
 
 class Pecker_Scanner
@@ -189,6 +189,7 @@ class Pecker_Scanner
                         break;
                     case T_VARIABLE:
                         $ntoken = $this->parser->getNextToken($k);
+                        //                         var_dump($token,$ntoken);exit();
                         $ptoken = $this->parser->getPreToken($k);
                         if ($ntoken === '(' && $ptoken != '->' && $ptoken !== '::' && $ptoken !== 'function' && $ptoken !== 'new')
                         {
@@ -244,8 +245,31 @@ class Pecker_Scanner
             }
             elseif($token === '$')
             {
+                /**
+                 * Zend_language_scanner.c : yy56 、yy61
+                 *
+                 $nt = $this->parser->getNextToken($k);
+                 switch ($nt)
+                 {
+                 case '$':
+                 break;
+                 case '\\':
+                 break;
+                 case '{':
+                 break;
+                 default:
+                 }
+                 */
                 $nt = $this->parser->getVariableToken($k);
-                if ($nt['token'] === '(')
+                if ($nt['token'] === '{')
+                {
+                    $nt1 = $this->parser->getVariableToken($k+$nt['key']+1);
+                    if ($nt1['token'] === '}' && $this->parser->getNextToken($k+$nt['key']+$nt1['key']+2) === '(')
+                    {
+                        $this->report->catchLog('${'.$nt1['func'].'}', 0,$this->parser->getPieceTokenAll($nt1['key']+$k+1));
+                    }
+                }
+                elseif($nt['token'] === '(')
                 {
                     $this->report->catchLog('$'.$nt['func'], 0,$this->parser->getPieceTokenAll($nt['key']+$k));
                 }
@@ -292,6 +316,7 @@ class Pecker_Scanner
         return false;
     }
 }
+
 
 class Pecker_Lexer
 {
@@ -458,7 +483,6 @@ class Pecker_Lexer
         return $this->tokens;
     }
 }
-
 
 
 class Pecker_Parser
@@ -1379,7 +1403,7 @@ class Pecker_Parser
     protected $errMsg;
     private $tokens;
     private $tokensSkip = array(T_WHITESPACE,T_COMMENT,T_DOC_COMMENT,T_ENCAPSED_AND_WHITESPACE);
-    private $tokensVariable = array('{','}','[',']','.');
+    private $tokensVariable = array('{','}');
 
     /**
      * Creates a parser instance.
@@ -1567,7 +1591,7 @@ class Pecker_Parser
     }
 
     /**
-     * get next tokens after a variable
+     * get next tokens after a variable,like curly syntax
      * @param int $k
      * @return array
      */
@@ -1587,7 +1611,7 @@ class Pecker_Parser
                 }
                 else
                 {
-                    if (!in_array($this->tokens[$k+$i],$this->tokensVariable))
+                    if (in_array($this->tokens[$k+$i],$this->tokensVariable))
                     {
                         $res = $this->tokens[$k+$i];
                         break;
@@ -1794,9 +1818,6 @@ class Pecker_Parser
         return $this->errMsg;
     }
 }
-
-
-
 
 class Pecker_Loger
 {

