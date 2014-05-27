@@ -13,7 +13,7 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         Scanner
- * @version         $Id: Scanner.php 29 2014-03-06 12:55:31Z cfc4n $
+ * @version         $Id: Scanner.php 31 2014-05-27 08:09:52Z cfc4n $
  */
 class Pecker_Scanner
 {
@@ -56,7 +56,7 @@ class Pecker_Scanner
     {
         if (substr($path,-1) == '/' || substr($path,-1) == '\\')
         {
-            $path = substr($path, 0.-1);
+            $path = substr($path, 0,-1);
         }
         if (!is_dir($path))
         {
@@ -169,9 +169,12 @@ class Pecker_Scanner
     private function checkTokens(array $tokens)
     {
         $i = 0;
+        $curly = false;
+        $curly_str = '';
+        $curly_num = 0;
         foreach ($tokens as $k => $token)
         {
-            if (is_array($token))
+            if (!$curly && is_array($token))
             {
                 switch ($token[0])
                 {
@@ -186,7 +189,6 @@ class Pecker_Scanner
                         break;
                     case T_VARIABLE:
                         $ntoken = $this->parser->getNextToken($k);
-//                         var_dump($token,$ntoken);exit();
                         $ptoken = $this->parser->getPreToken($k);
                         if ($ntoken === '(' && $ptoken != '->' && $ptoken !== '::' && $ptoken !== 'function' && $ptoken !== 'new')
                         {
@@ -240,6 +242,32 @@ class Pecker_Scanner
                     default:
                 }
             }
+            elseif ($curly)
+            {
+                //Complex (curly) syntax
+                if (!is_array($token))
+                {
+                    if ($token === '{')
+                    {
+                        $curly_str .= '{';
+                        $curly_num ++;
+                    }
+                    elseif($token === '}')
+                    {
+                        $curly_str .= '}';
+                        $curly_num --;
+                    }
+                }
+                else 
+                {
+                    $curly_str .= $token[1];
+                }
+                if ($curly_num == 0)
+                {
+                    $curly = false;
+                    $this->report->catchLog($curly_str, 0,$this->parser->getPieceTokenAll($k));
+                }
+            }
             elseif($token === '$')
             {
                 /**
@@ -260,15 +288,9 @@ class Pecker_Scanner
                 $nt = $this->parser->getVariableToken($k);
                 if ($nt['token'] === '{')
                 {
-                    $nt1 = $this->parser->getVariableToken($k+$nt['key']+1);
-                    if ($nt1['token'] === '}' && $this->parser->getNextToken($k+$nt['key']+$nt1['key']+2) === '(')
-                    {
-                        $this->report->catchLog('${'.$nt1['func'].'}', 0,$this->parser->getPieceTokenAll($nt1['key']+$k+1));
-                    }
-                }
-                elseif($nt['token'] === '(')
-                {
-                    $this->report->catchLog('$'.$nt['func'], 0,$this->parser->getPieceTokenAll($nt['key']+$k));
+                    $curly = true;
+                    $curly_str = '$';
+                    $curly_num = 0;
                 }
             }
         }

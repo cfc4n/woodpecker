@@ -13,7 +13,7 @@
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author          CFC4N <cfc4n@cnxct.com>
  * @package         demo
- * @version         $Id: 1.php 29 2014-03-06 12:55:31Z cfc4n $
+ * @version         $Id: 1.php 31 2014-05-27 08:09:52Z cfc4n $
  */
 
 $str = 'base64_decode';
@@ -65,8 +65,9 @@ ${true?$func1:$func2}();    //get it
 ${2+1}();    //get it
 ${2+1};    //pass
 ${@func};    //pass
-
-
+$evil = '';
+${ $ {func}}($evil);    //get it
+${(array)function(){}}($evil);    //get it
 @preg_replace("/[pageerror]/e",$_POST['error'],"cfc");    //get it
 header('HTTP/1.1 404 Not Found');
 
