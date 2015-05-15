@@ -237,7 +237,7 @@ class Pecker_Scanner
                         {
                             $infile = $this->parser->getFilepathToken($k);
                             $fileinfo = pathinfo($infile);
-                            if (!isset($this->extend[$fileinfo['extension']]))
+                            if (isset($fileinfo['extension']) && !isset($this->extend[$fileinfo['extension']]))
                             {
                                 $this->report->catchLog($token[1], $token[2],$this->parser->getPieceTokenAll($k));
                             }
